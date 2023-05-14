@@ -18,7 +18,7 @@ countryInputEl.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 function onInput(evt) {
   const searchValue = evt.target.value.trim();
   if (!searchValue) {
-    // clearHTML();
+    clearHTML();
     return;
   }
   checkRequestedArr(searchValue);
