@@ -17,8 +17,8 @@ countryInputEl.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
 function onInput(evt) {
   const searchValue = evt.target.value.trim();
+  clearHTML();
   if (!searchValue) {
-    clearHTML();
     return;
   }
   checkRequestedArr(searchValue);
@@ -27,7 +27,6 @@ function onInput(evt) {
 function checkRequestedArr(searchValue) {
   fetchCountries(searchValue)
     .then(arr => {
-      clearHTML();
       if (arr.length > 10) {
         Notify.info(
           'Too many matches found. Please enter a more specific name.'
@@ -46,10 +45,14 @@ function checkRequestedArr(searchValue) {
 }
 
 function renderCountryList(countries) {
-  for (const { name, flags } of countries) {
-    const countryListMarkup = `<li><img src="${flags.svg}" alt="country_flag"><p>${name}</p></li>`;
-    countryListEl.insertAdjacentHTML('beforeend', countryListMarkup);
-  }
+  const countryListMarkup = countries
+    .map(
+      ({ name, flags }) =>
+        `<li><img src="${flags.svg}" alt="country_flag"><p>${name}</p></li>`
+    )
+    .join('');
+
+  countryListEl.insertAdjacentHTML('beforeend', countryListMarkup);
 }
 
 function renderCountryInfo(country) {
